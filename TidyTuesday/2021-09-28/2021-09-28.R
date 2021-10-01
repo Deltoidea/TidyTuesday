@@ -60,9 +60,10 @@ bumpplot <- left_join(papers, paper_authors) %>%
        y = "Ranking",
        caption = "Data obtained from the National Bureau of Economic Reasearch",
        x = "") +
-  coord_cartesian(xlim=c(1970, 2060))
+  coord_cartesian(xlim=c(1970, 2060))+
+  scale_x_continuous(breaks = c(1970, 1980, 1990, 2000, 2010, 2020 ))
 bumpplot
 ggsave(filename = "./bumpplot.png",
        plot = bumpplot,
-       height = 10,
-       width = 14)
+       height = 5,
+       width = 7)
