@@ -1,0 +1,48 @@
+---
+title: "Utah's Nursing Wages"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(tidytuesdayR)
+
+
+df <- tt_load("2021-10-05")
+
+df <- df$nurses
+
+regions <- read_csv(url("https://raw.githubusercontent.com/cphalpert/census-regions/master/us%20census%20bureau%20regions%20and%20divisions.csv"))
+
+df %>% names
+
+df <- df %>% pivot_longer(cols = starts_with("Annual"), 
+                    names_to = "Salary", 
+                    values_to = "valueS") %>% 
+  pivot_longer(cols = starts_with("Hourly"), 
+               names_to = "Hourly", 
+               values_to = "valueH") %>% 
+  left_join(.,regions)
+
+```
+
+## Wages over Time 
+This is just a quick look at this weeks #TidyTuesday dataset. The graph below shows a line representing the average hourly 
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+df %>%
+  ggplot(aes(x = Year, y = `Hourly Wage Avg`, group = State)) + 
+  geom_line(aes(color = Region), stat = "identity", alpha = 0.5) +
+  geom_line(data = df %>% 
+              group_by(State, Year) %>% 
+              summarise(mean = mean(`Hourly Wage Avg`)) %>% 
+              filter(State == "Utah"), color = "red") +
+  labs( y = " Mean Hourly Wage", title = "") +
+  theme_classic() +
+theme(legend.title = element_blank(), 
+      legend.position = "bottom") 
+
+```
+
+ 
