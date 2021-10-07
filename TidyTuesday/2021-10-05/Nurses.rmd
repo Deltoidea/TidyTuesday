@@ -36,7 +36,7 @@ inf_rate <- inflation_rate %>%
 ```
 
 ## Wages over Time 
-This is just a quick look at this weeks #TidyTuesday dataset. The graph below shows a line representing the average hourly 
+This is just a quick look at this weeks #TidyTuesday dataset. The graph below shows a line representing mean salaries for each region.
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 
 df %>% 
@@ -54,9 +54,9 @@ df %>%
   na.omit() %>%
   mutate(name = recode(name, "valueS"= "Actual Salary")) %>% 
   ggplot(aes(x = Year,  color = Region)) +
-  geom_line(aes(y = value)) +
+  geom_line(aes(y = value/1000)) +
   facet_wrap(~name) + 
-  labs(caption = "Inflation Data from: https://www.macrotrends.net/countries/USA/united-states/inflation-rate-cpi")
+  labs(caption = "Inflation Data from: https://www.macrotrends.net/countries/USA/united-states/inflation-rate-cpi", y = "Salary in Thousands")
   
 
 
@@ -64,7 +64,7 @@ df %>%
 
 ## Some Random aRt 
 
-```{r}
+```{r echo=FALSE, warning=FALSE}
 
 df %>% 
   ggplot(aes(x = Year, y = valueS, group = State)) + 
