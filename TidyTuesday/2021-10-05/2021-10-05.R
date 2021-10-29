@@ -55,3 +55,5 @@ theme(legend.po = "none",
 
 # https://www.macrotrends.net/countries/USA/united-states/inflation-rate-cpi
 
+df$valueS
+  
