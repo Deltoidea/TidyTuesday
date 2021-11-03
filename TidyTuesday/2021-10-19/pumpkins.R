@@ -80,10 +80,11 @@ p1 <- pdf %>%
   facet_wrap(~species,scales = "free") +
   theme(legend.position = "none",
         axis.text = element_blank(),
-        axis.title = element_blank()) +
+        plot.background = element_rect(fill = "white")) +
   labs(title = "Produce Size by Latitude",
-       caption = "*Location information was downloaded from simplemaps.com")
-
+       caption = "*Location information was downloaded from simplemaps.com",
+       y = "Latitude", x = "Weight")
+p1
 sumpdf <- pdf %>% 
   filter(year == 2021) %>% 
   drop_na() %>% 
@@ -114,8 +115,20 @@ p2 <- ggplot() +
   theme(axis.text = element_blank(), axis.title = element_blank())
 p2  
   
-p1 + labs(title = "What Effect Does Latitude Have on Max Weight?")
+scatterplot <- p1 + labs(title = "What Effect Does Latitude Have on Max Weight?",
+                         x = "Latitude")
 
-p2 
+map <- p2 
 
-?geom_point()
+
+ggsave(plot = scatterplot,
+       "Scatterplot.png",
+       device = "png",
+       width = 7,
+       height = 5)
+
+ggsave(plot = map,
+       "map.png",
+       device = "png",
+       width = 7,
+       height = 5)
