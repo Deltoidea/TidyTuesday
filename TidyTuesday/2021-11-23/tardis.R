@@ -100,8 +100,9 @@ nasum <- df %>%
 # Make some models to compare
 
 hist(df$uk_viewers)
+mod1 <- lm(data = train, formula = uk_viewers ~ .)
 
-tree <- rpart(uk_viewers ~ type*era+episode_number, data = train)
+tree <- rpart(uk_viewers ~ type*era+episode_number, data = train,na.action = T)
 tree
 Boston.boost <- gbm(uk_viewers ~ .,
                     data = train ,

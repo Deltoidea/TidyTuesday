@@ -1,0 +1,55 @@
+---
+title: "Spice Girls!!"
+author: "Cody Iordachescu"
+date: "12/20/2021"
+output: html_document
+---
+
+### Environment Set up:
+```{r echo=TRUE}
+# library(tidyverse)
+# library(tidytuesdayR)
+# 
+# data <- tt_load("2021-12-14",)
+# 
+# data$lyrics %>% 
+#   write_csv("./Lyrics.csv")
+# data$related_artists %>% 
+#   write_csv("Related_artists.csv")
+# data$studio_album_tracks %>% 
+#   write_csv("./Song_Observations.csv")
+```
+
+
+### Read the data into R
+```{r Settings, echo=TRUE}
+library(tidytuesdayR)
+library(tidyverse)
+
+dfs <- read_csv("Song_Observations.csv")
+dfl <- read_csv("Lyrics.csv")
+dfa <- read_csv("Related_artists.csv")
+```
+
+### Exlore the data a bit
+```{r eval=FALSE, include=FALSE}
+dfs %>% 
+  glimpse
+dfl %>% 
+  glimpse
+dfa %>% 
+  glimpse()
+```
+
+### Visualize the data a bit
+
+```{r}
+dfs %>% 
+  group_by(album_name) %>% 
+  summarise(speechiness = mean(speechiness),
+            danceability = mean(danceability),
+            tempo = mean(tempo)
+  )
+```
+
+
