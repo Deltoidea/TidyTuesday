@@ -3,12 +3,13 @@ library(tidytuesdayR)
 library(lubridate)
 library(directlabels)
 
+#Read in the data:
 papers <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-09-28/papers.csv')
 authors <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-09-28/authors.csv')
 programs <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-09-28/programs.csv')
 paper_authors <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-09-28/paper_authors.csv')
 paper_programs <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-09-28/paper_programs.csv')
-
+#Do a little exploration
 glimpse(paper_authors)
 glimpse(paper_programs)
 programs %>% head
@@ -16,21 +17,23 @@ authors <- authors %>%
   select(author, name)
 papers %>% head
 
+#Join datasets for plotting
 left_join(papers, paper_authors) %>% 
   mutate(author_code = author, NULL) %>% 
   select(!author) %>% 
   left_join(., paper_programs) %>% 
   drop_na() %>% 
   left_join(.,programs) %>% 
-  unite("date", month,year) %>% 
+  unite("date", month,year) %>% #Create functional date column
   mutate(date = date %>% lubridate::my()) %>% 
-  group_by(year = floor_date(date, unit = "year"), program_desc) %>% 
-  tally() %>% drop_na %>%
-  filter(year < "2021-01-01") %>% 
-  ggplot(aes(x = year, y  = n, color = program_desc)) +
+  group_by(year = floor_date(date, unit = "year"), Program = program_desc) %>% 
+  tally(name = "Count") %>% drop_na %>% #Summarize data to create a Count column
+  filter(year < "2021-01-01") %>% # Remove partial years
+  ggplot(aes(x = Year, y  = Count, color = Program)) +
   geom_line(alpha = .5) +
   theme_bw()+
-  labs(title = "Papers Published b")
+  labs(title = "Papers Published by Year")
+
 # make a bumpchart
 
 
